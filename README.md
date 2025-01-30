@@ -1,5 +1,8 @@
-# Course Code: HTTP 5121
-**This course delivers the fundamentals of well-formed, semantic HTML markup and CSS. Students will design and build responsive web interfaces based on mockups that are optimized for accessibility and search engines (SEO).**
+# Back-End Web Development 1
+## Course Code: HTTP 5125
 
-# Extra will come
-The readme file will be **_updated_**
+
+In this course, students are introduced to server-side web development with the C# programming language, and will implement techniques for creating data-driven websites drawing from various external data sources.
+
+## Extra will come
+This ReadMe Will be **_Updated_**
