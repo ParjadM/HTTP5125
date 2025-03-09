@@ -1,10 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient; 
+using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 namespace Cumulative1.Model
 {
-    public class SchoolDbContext
+    public class SchoolDbContext : DbContext
     {
+        public SchoolDbContext(DbContextOptions<SchoolDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Teacher> Teachers { get; set; }
+
         private static string User { get { return "root"; } }
         private static string Password { get { return ""; } }
         private static string Database { get { return "school"; } }

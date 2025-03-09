@@ -33,7 +33,7 @@ namespace Cumulative1.Controllers
                 Connection.Open();
                 MySqlCommand Command = Connection.CreateCommand();
 
-                Command.CommandText = "SELECT * FROM school";
+                Command.CommandText = "SELECT * FROM teachers";
 
                 using (MySqlDataReader ResultSet = Command.ExecuteReader())
                 {
@@ -67,7 +67,7 @@ namespace Cumulative1.Controllers
             {
                 Connection.Open();
                 MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM school WHERE Id = @id";
+                Command.CommandText = "SELECT * FROM teachers WHERE Id = @id";
                 Command.Parameters.AddWithValue("@id", id);
 
 

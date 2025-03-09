@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cumulative1.Model
 {
-    public class Teacher : ControllerBase
+    public class Teacher 
     {
         public int Id { get; set; }
         public string? Name { get; set; }
