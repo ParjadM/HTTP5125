@@ -61,6 +61,25 @@ namespace Cumulative1.Controllers
             return StudentNames;
         }
         /// <summary>
+        /// Get a student by their ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetStudentById/{id}")]
+        public IActionResult GetTeacherById(int id)
+        {
+            var Student = FindStudent(id);
+
+            if (Student == null)
+            {
+                return NotFound(new { message = "Student not found" });
+            }
+
+            return Ok(Student);
+        }
+
+        /// <summary>
         /// Find a student by their ID.
         /// </summary>
         /// <param name="id"></param>

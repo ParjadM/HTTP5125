@@ -43,6 +43,29 @@
         }
       }
     },
+    "/GetCourseById/{id}": {
+      "get": {
+        "tags": [
+          "CourseAPI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Student/ListStudentNames": {
       "get": {
         "tags": [
@@ -81,6 +104,29 @@
         }
       }
     },
+    "/api/Student/GetStudentById/{id}": {
+      "get": {
+        "tags": [
+          "StudentAPI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Teacher/ListTeacherNames": {
       "get": {
         "tags": [
@@ -115,6 +161,29 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Teacher/GetTeacherById/{id}": {
+      "get": {
+        "tags": [
+          "TeacherAPI"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

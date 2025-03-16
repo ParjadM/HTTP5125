@@ -54,6 +54,26 @@ namespace Cumulative1.Model
             return TeacherNames;
         }
         /// <summary>
+        /// Get a teacher by their ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>get the teacher information by ID</returns>
+        [HttpGet]
+        [Route("GetTeacherById/{id}")]
+        public IActionResult GetTeacherById(int id)
+        {
+            var teacher = FindTeacher(id);
+
+            if (teacher == null)
+            {
+                return NotFound(new { message = "Teacher not found" });
+            }
+
+            return Ok(teacher);
+        }
+
+
+        /// <summary>
         /// Find a teacher by their ID.
         /// </summary>
         /// <param name="id"></param>

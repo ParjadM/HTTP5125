@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "Cumulative1.Controllers.StudentAPIController",
+    "Method": "GetTeacherById",
+    "RelativePath": "api/Student/GetStudentById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Cumulative1.Controllers.StudentAPIController",
     "Method": "ListStudentNames",
     "RelativePath": "api/Student/ListStudentNames",
     "HttpMethod": "GET",
@@ -21,6 +37,22 @@
   },
   {
     "ContainingType": "Cumulative1.Model.TeacherAPIController",
+    "Method": "GetTeacherById",
+    "RelativePath": "api/Teacher/GetTeacherById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Cumulative1.Model.TeacherAPIController",
     "Method": "ListTeacherNames",
     "RelativePath": "api/Teacher/ListTeacherNames",
     "HttpMethod": "GET",
@@ -38,6 +70,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Cumulative1.Controllers.CourseAPIController",
+    "Method": "GetTeacherById",
+    "RelativePath": "GetCourseById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "Cumulative1.Controllers.CourseAPIController",

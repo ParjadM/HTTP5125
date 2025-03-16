@@ -42,9 +42,8 @@ namespace Cumulative1.Controllers
                     
                     while (ResultSet.Read())
                     {
-                        string CourseFName = ResultSet["Coursefname"].ToString();
-                        string CourseLName = ResultSet["Courselname"].ToString();
-                        string CourseName = $"{CourseFName} {CourseLName}";
+                        string CourseFName = ResultSet["coursename"].ToString();
+                        string CourseName = $"{CourseFName}";
 
                         // Add the Course Name to the List
                         CourseNames.Add(CourseName);
@@ -55,7 +54,24 @@ namespace Cumulative1.Controllers
             
             return CourseNames;
         }
+        /// <summary>
+        /// Get a course by their ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Return course information by ID</returns>
+        [HttpGet]
+        [Route("GetCourseById/{id}")]
+        public IActionResult GetTeacherById(int id)
+        {
+            var Course = FindCourse(id);
 
+            if (Course == null)
+            {
+                return NotFound(new { message = "Course not found" });
+            }
+
+            return Ok(Course);
+        }
         internal Course FindCourse(int id)
         {
             Course Course = null; 
