@@ -1,143 +1,150 @@
-﻿using Cumulative1.Model;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Cumulative1.Model;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace Cumulative1.Controllers
 {
+    [Route("api/Course")]
+    [ApiController]
     public class CourseAPIController : ControllerBase
     {
-        // Dependency injection of database context
         private readonly SchoolDbContext _context;
+
+        // Dependency injection of database context
         public CourseAPIController(SchoolDbContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Returns a list of Courses in the system.
+        /// Returns a list of course names in the system.
         /// </summary>
         /// <example>
-        /// GET api/Course/ListCourseNames -> ["http5101", "http5102", "http5103"]
+        /// GET api/Course/ListCourseNames -> ["HTTP5101", "HTTP5102", "HTTP5103"]
         /// </example>
         /// <returns>
-        /// A list of course names
+        /// A list of course names.
         /// </returns>
         [HttpGet]
         [Route("ListCourseNames")]
         public List<string> ListCourseNames()
         {
-            // Create an empty list of Course Names
+            // Create an empty list of course names
             List<string> CourseNames = new List<string>();
 
-            using (MySqlConnection Connection = _context.AccessDatabase())
+           
+            using(MySqlConnection connection =_context.AccessDatabase())
             {
-                Connection.Open();
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText= "SELECT coursename FROM Courses";
 
-                MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM Courses";
-
-                
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                using(MySqlDataReader resultSet = command.ExecuteReader())
                 {
-                    
-                    while (ResultSet.Read())
+                    // Loop through each row in the result set
+                    while(resultSet.Read())
                     {
-                        string CourseFName = ResultSet["coursename"].ToString();
-                        string CourseName = $"{CourseFName}";
-
-                        // Add the Course Name to the List
-                        CourseNames.Add(CourseName);
+                        string courseName = resultSet["coursename"].ToString();
+                        CourseNames.Add(courseName);
                     }
                 }
             }
 
-            
+            //return the final list of course names
             return CourseNames;
         }
+
         /// <summary>
-        /// Get a course by their ID.
+        /// Returns detailed information about a specific course by ID.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Return course information by ID</returns>
+        /// <example>
+        /// GET api/Course/FindCourse/1 -> { "Id": 1, "Name": "HTTP5101", ... }
+        /// </example>
+        /// <param name="id">The ID of the course to retrieve.</param>
+        /// <returns>
+        /// A course object containing detailed information.
+        /// </returns>
         [HttpGet]
-        [Route("GetCourseById/{id}")]
-        public IActionResult GetTeacherById(int id)
+        [Route("FindCourse/{id}")]
+        public Course FindCourse(int id)
         {
-            var Course = FindCourse(id);
+            // Initialize an empty Course object
+            Course selectedCourse = null;
 
-            if (Course == null)
+            using (MySqlConnection connection =_context.AccessDatabase())
             {
-                return NotFound(new { message = "Course not found" });
-            }
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText ="SELECT * FROM Courses WHERE Courseid = @id";
+                command.Parameters.AddWithValue("@id", id);
 
-            return Ok(Course);
-        }
-        internal Course FindCourse(int id)
-        {
-            Course Course = null; 
-
-            using (MySqlConnection Connection = _context.AccessDatabase())
-            {
-                Connection.Open();
-
-                
-                MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM Courses WHERE Courseid = @id";
-                Command.Parameters.AddWithValue("@id", id);
-
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                using (MySqlDataReader resultSet= command.ExecuteReader())
                 {
-                    if (ResultSet.Read())
+                    // If a matching course is found, populate the course object
+                    if (resultSet.Read())
                     {
-                        
-                        Course = new Course
+                        selectedCourse = new Course
                         {
-                            Id = Convert.ToInt32(ResultSet["Courseid"]),
-                            Name = $"{ResultSet["coursename"]}",
-                            Teacherid = Convert.ToInt32(ResultSet["teacherid"]),
-                            Startdate = Convert.ToDateTime(ResultSet["startdate"]),
-                            Finishdate = Convert.ToDateTime(ResultSet["finishdate"]),
-                            Coursecode = ResultSet["coursecode"].ToString()
+                            Id = Convert.ToInt32(resultSet["Courseid"]),
+                            Name = resultSet["coursename"].ToString(),
+                            Teacherid = Convert.ToInt32(resultSet["teacherid"]),
+                            Startdate = Convert.ToDateTime(resultSet["startdate"]),
+                            Finishdate = Convert.ToDateTime(resultSet["finishdate"]),
+                            Coursecode = resultSet["coursecode"].ToString()
                         };
                     }
                 }
             }
 
-            return Course; 
+            // Return the selected course or null if not found
+            return selectedCourse;
         }
 
-
-        internal List<Course> ListCourses()
+        /// <summary>
+        /// Returns a list of all courses in the system.
+        /// </summary>
+        /// <example>
+        /// GET api/Course/ListCourses -> [{ "Id": 1, "Name": "HTTP5101", ... }, ...]
+        /// </example>
+        /// <returns>
+        /// A list of all course objects.
+        /// </returns>
+        [HttpGet]
+        [Route("ListCourses")]
+        public List<Course> ListCourses()
         {
-            List<Course> Courses = new List<Course>(); 
+            // Create an empty list of courses
+            List<Course>courses = new List<Course>();
 
-            using (MySqlConnection Connection = _context.AccessDatabase())
+            using (MySqlConnection connection= _context.AccessDatabase())
             {
-                Connection.Open();
+                connection.Open();
+                MySqlCommand command= connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Courses";
 
-                
-                MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM Courses";
-
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                using (MySqlDataReader resultSet = command.ExecuteReader())
                 {
-                    while (ResultSet.Read())
+                    //loop through each row in the result set and populate the list
+                    while (resultSet.Read())
                     {
-                       
-                        Courses.Add(new Course
+                        courses.Add(new Course
                         {
-                            Id = Convert.ToInt32(ResultSet["Courseid"]),
-                            Name = $"{ResultSet["coursename"]}",
-                            Teacherid = Convert.ToInt32(ResultSet["teacherid"]),
-                            Startdate = Convert.ToDateTime(ResultSet["startdate"]),
-                            Finishdate = Convert.ToDateTime(ResultSet["finishdate"]),
-                            Coursecode = ResultSet["coursecode"].ToString()
+                            Id = Convert.ToInt32(resultSet["Courseid"]),
+                            Name = resultSet["coursename"].ToString(),
+                            Teacherid = Convert.ToInt32(resultSet["teacherid"]),
+                            Startdate = Convert.ToDateTime(resultSet["startdate"]),
+                            Finishdate = Convert.ToDateTime(resultSet["finishdate"]),
+                            Coursecode = resultSet["coursecode"].ToString()
                         });
                     }
                 }
             }
 
-            return Courses; 
+            //Return the final list of courses
+            return courses;
         }
     }
 }

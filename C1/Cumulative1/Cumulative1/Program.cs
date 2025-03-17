@@ -1,6 +1,8 @@
 using Cumulative1.Controllers;
 using Cumulative1.Model;
+using FluentAssertions.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-builder.Services.AddDbContext<SchoolDbContext>(options =>
-    options.UseMySql(
-        "server=localhost;database=schooldb;user=root;password=;",
-        new MySqlServerVersion(new Version(10, 4, 32)) 
-    ));
+
+builder.Services.AddScoped<SchoolDbContext>();
 
 
 builder.Services.AddTransient<TeacherAPIController>();

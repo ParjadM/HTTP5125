@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Cumulative1.Models;
+using System;
 using System.Collections.Generic;
+using Cumulative1.Model;
 
-namespace Cumulative1.Model
+namespace Cumulative1.Controllers
 {
     [Route("api/Teacher")]
     [ApiController]
@@ -12,141 +14,131 @@ namespace Cumulative1.Model
     {
         private readonly SchoolDbContext _context;
 
+        // Dependency injection of database context
         public TeacherAPIController(SchoolDbContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Returns a list of Teachers in the system.
+        /// Returns a list of teacher names in the system.
         /// </summary>
         /// <example>
-        /// GET api/Teacher/ListTeacherNames -> [(Alexander,Bennett),(Caitlin,Cummings)]
+        /// GET api/Teacher/ListTeacherNames -> ["Alexander Bennett", "Caitlin Cummings"]
         /// </example>
         /// <returns>
-        /// return a list of teacher names
+        /// A list of teacher names.
         /// </returns>
         [HttpGet]
         [Route("ListTeacherNames")]
         public List<string> ListTeacherNames()
         {
+            // Create an empty list of teacher names
             List<string> TeacherNames = new List<string>();
 
-            using (MySqlConnection Connection = _context.AccessDatabase())
+            using (MySqlConnection connection = _context.AccessDatabase())
             {
-                Connection.Open();
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT CONCAT(teacherfname, ' ', teacherlname) AS FullName FROM teachers";
 
-                MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM teachers";
-
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                using (MySqlDataReader resultSet = command.ExecuteReader())
                 {
-                    while (ResultSet.Read())
+                    while (resultSet.Read())
                     {
-                        string TeacherFName = ResultSet["teacherfname"].ToString();
-                        string TeacherLName = ResultSet["teacherlname"].ToString();
-                        string TeacherName = $"{TeacherFName} {TeacherLName}";
-
-                        TeacherNames.Add(TeacherName);
+                        string teacherName =resultSet["FullName"].ToString();
+                        TeacherNames.Add(teacherName);
                     }
                 }
             }
+
+            // Return the final list of teacher names
             return TeacherNames;
         }
+
         /// <summary>
-        /// Get a teacher by their ID.
+        /// Returns detailed information about a specific teacher by ID.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>get the teacher information by ID</returns>
+        /// <example>
+        /// GET api/Teacher/FindTeacher/1 -> { "Id": 1, "Name": "Alexander Bennett", ... }
+        /// </example>
+        /// <param name="id">The ID of the teacher to retrieve.</param>
+        /// <returns>
+        /// A teacher object containing detailed information.
+        /// </returns>
         [HttpGet]
-        [Route("GetTeacherById/{id}")]
-        public IActionResult GetTeacherById(int id)
+        [Route("FindTeacher/{id}")]
+        public Teacher FindTeacher(int id)
         {
-            var teacher = FindTeacher(id);
+            // Initialize an empty Teacher object
+            Teacher selectedTeacher = null;
 
-            if (teacher == null)
+            using (MySqlConnection connection = _context.AccessDatabase())
             {
-                return NotFound(new { message = "Teacher not found" });
-            }
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText= "SELECT * FROM teachers WHERE teacherid = @id";
+                command.Parameters.AddWithValue("@id", id);
 
-            return Ok(teacher);
-        }
-
-
-        /// <summary>
-        /// Find a teacher by their ID.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>list that specific teacher in database</returns>
-        internal Teacher FindTeacher(int id)
-        {
-            // Create an empty teacher object
-            Teacher teacher = null;
-            // Create a connection to the database
-            using (MySqlConnection Connection = _context.AccessDatabase())
-            {
-                // Open the connection between the web server and database
-                Connection.Open();
-                // Create a new SQL command
-                MySqlCommand Command = Connection.CreateCommand();
-                // SQL command to select a teacher by their ID
-                Command.CommandText = "SELECT * FROM teachers WHERE teacherid = @id";
-                // Bind the parameter to the SQL command
-                Command.Parameters.AddWithValue("@id", id);
-                // Execute the SQL command
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                using (MySqlDataReader resultSet = command.ExecuteReader())
                 {
-                    if (ResultSet.Read())
+                    if (resultSet.Read())
                     {
-                        
-                        teacher = new Teacher
+                        selectedTeacher = new Teacher
                         {
-                            Id = Convert.ToInt32(ResultSet["teacherid"]),
-                            Name = $"{ResultSet["teacherfname"]} {ResultSet["teacherlname"]}",
-                            EmployeeNumber = ResultSet["employeenumber"].ToString(),
-                            HireDate = Convert.ToDateTime(ResultSet["hiredate"])
+                            Id = Convert.ToInt32(resultSet["teacherid"]),
+                            Name = $"{resultSet["teacherfname"]} {resultSet["teacherlname"]}",
+                            EmployeeNumber = resultSet["employeenumber"].ToString(),
+                            HireDate = Convert.ToDateTime(resultSet["hiredate"])
                         };
                     }
                 }
             }
-            // Return the teacher object
-            return teacher;
+
+            // Return the selected teacher or null if not found
+            return selectedTeacher;
         }
 
         /// <summary>
-        /// List all teachers in the database.
+        /// Returns a list of all teachers in the system.
         /// </summary>
-        /// <returns>list all the teachers name in the database</returns>
-        internal List<Teacher> ListTeachers()
+        /// <example>
+        /// GET api/Teacher/ListTeachers -> [{ "Id": 1, "Name": "Alexander Bennett", ... }, ...]
+        /// </example>
+        /// <returns>
+        /// A list of all teacher objects.
+        /// </returns>
+        [HttpGet]
+        [Route("ListTeachers")]
+        public List<Teacher> ListTeachers()
         {
             // Create an empty list of teachers
-            List<Teacher> Teachers = new List<Teacher>();
-            // Create a connection to the database
-            using (MySqlConnection Connection = _context.AccessDatabase())
+            List<Teacher> teachers = new List<Teacher>();
+
+            using (MySqlConnection connection = _context.AccessDatabase())
             {
-                // Open the connection between the web server and database
-                Connection.Open();
-                // Create a new SQL command
-                MySqlCommand Command = Connection.CreateCommand();
-                Command.CommandText = "SELECT * FROM teachers";
-                // Execute the SQL command
-                using (MySqlDataReader ResultSet = Command.ExecuteReader())
+                connection.Open();
+                MySqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM teachers";
+
+                using (MySqlDataReader resultSet = command.ExecuteReader())
                 {
-                    while (ResultSet.Read())
+                    // Loop through each row in the result set and populate the list
+                    while (resultSet.Read())
                     {
-                        Teachers.Add(new Teacher
+                        teachers.Add(new Teacher
                         {
-                            Id = Convert.ToInt32(ResultSet["teacherid"]),
-                            Name = $"{ResultSet["teacherfname"]} {ResultSet["teacherlname"]}",
-                            EmployeeNumber = ResultSet["employeenumber"].ToString(),
-                            HireDate = Convert.ToDateTime(ResultSet["hiredate"])
+                            Id = Convert.ToInt32(resultSet["teacherid"]),
+                            Name = $"{resultSet["teacherfname"]} {resultSet["teacherlname"]}",
+                            EmployeeNumber = resultSet["employeenumber"].ToString(),
+                            HireDate = Convert.ToDateTime(resultSet["hiredate"])
                         });
                     }
                 }
             }
-            // Return the list of teachers
-            return Teachers; 
-        }
 
+            // Return the final list of teachers
+            return teachers;
+        }
     }
 }

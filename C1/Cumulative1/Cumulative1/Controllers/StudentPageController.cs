@@ -11,7 +11,7 @@ namespace Cumulative1.Controllers
         
         public StudentPageController(StudentAPIController api)
         {
-            _api = api;
+            _api =api;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Cumulative1.Controllers
         /// <returns>A view containing the Student's details.</returns>
         public IActionResult Show(int id)
         {
-            Student SelectedStudent = _api.FindStudent(id);
+            Student SelectedStudent =_api.FindStudent(id);
             return View("~/Views/Student/Show.cshtml", SelectedStudent);
         }
     }

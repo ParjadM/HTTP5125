@@ -65,3 +65,4 @@ C:\Users\User\OneDrive\Desktop\Humber\Back-End Web Development 1\C1\Cumulative1\
 C:\Users\User\OneDrive\Desktop\Humber\Back-End Web Development 1\C1\Cumulative1\Cumulative1\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\User\OneDrive\Desktop\Humber\Back-End Web Development 1\C1\Cumulative1\Cumulative1\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\User\OneDrive\Desktop\Humber\Back-End Web Development 1\C1\Cumulative1\Cumulative1\obj\Debug\net8.0\Cumulative1.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\User\OneDrive\Desktop\Humber\Back-End Web Development 1\C1\Cumulative1\Cumulative1\bin\Debug\net8.0\FluentAssertions.dll

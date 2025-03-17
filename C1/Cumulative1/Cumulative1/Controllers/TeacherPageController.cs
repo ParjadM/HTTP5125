@@ -17,7 +17,7 @@ namespace Cumulative1.Controllers
         /// <returns>A view containing all teachers.</returns>
         public IActionResult List()
         {
-            List<Teacher> Teachers = _api.ListTeachers();
+            List<Teacher> Teachers =_api.ListTeachers();
             return View("~/Views/Teacher/List.cshtml", Teachers);
         }
 
@@ -30,7 +30,7 @@ namespace Cumulative1.Controllers
         public IActionResult Show(int id)
         {
             Teacher SelectedTeacher = _api.FindTeacher(id);
-            return View("~/Views/Teacher/Show.cshtml", SelectedTeacher);
+            return View("~/Views/Teacher/Show.cshtml",SelectedTeacher);
         }
 
     }
