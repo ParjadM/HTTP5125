@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Cumulative1.Model;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-
 namespace Cumulative1.Controllers
 {
     [Route("api/Student")]
@@ -17,43 +13,6 @@ namespace Cumulative1.Controllers
         public StudentAPIController(SchoolDbContext context)
         {
             _context =context;
-        }
-
-        /// <summary>
-        /// Returns a list of student names in the system.
-        /// </summary>
-        /// <example>
-        /// GET api/Student/ListStudentNames
-        /// </example>
-        /// <returns>
-        /// A list of student names.
-        /// </returns>
-        [HttpGet]
-        [Route("ListStudentNames")]
-        public List<string> ListStudentNames()
-        {
-            // Create an empty list of student names
-            List<string> StudentNames= new List<string>();
-
-            using (MySqlConnection connection = _context.AccessDatabase())
-            {
-                connection.Open();
-                MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT CONCAT(studentfname, ' ', studentlname) AS FullName FROM Students";
-
-                using (MySqlDataReader resultSet = command.ExecuteReader())
-                {
-                    // Loop through each row in the result set
-                    while (resultSet.Read())
-                    {
-                        string studentName = resultSet["FullName"].ToString();
-                        StudentNames.Add(studentName);
-                    }
-                }
-            }
-
-            // Return the final list of student names
-            return StudentNames;
         }
 
         /// <summary>

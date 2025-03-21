@@ -20,48 +20,10 @@ namespace Cumulative1.Controllers
         }
 
         /// <summary>
-        /// Returns a list of course names in the system.
-        /// </summary>
-        /// <example>
-        /// GET api/Course/ListCourseNames -> ["HTTP5101", "HTTP5102", "HTTP5103"]
-        /// </example>
-        /// <returns>
-        /// A list of course names.
-        /// </returns>
-        [HttpGet]
-        [Route("ListCourseNames")]
-        public List<string> ListCourseNames()
-        {
-            // Create an empty list of course names
-            List<string> CourseNames = new List<string>();
-
-           
-            using(MySqlConnection connection =_context.AccessDatabase())
-            {
-                connection.Open();
-                MySqlCommand command = connection.CreateCommand();
-                command.CommandText= "SELECT coursename FROM Courses";
-
-                using(MySqlDataReader resultSet = command.ExecuteReader())
-                {
-                    // Loop through each row in the result set
-                    while(resultSet.Read())
-                    {
-                        string courseName = resultSet["coursename"].ToString();
-                        CourseNames.Add(courseName);
-                    }
-                }
-            }
-
-            //return the final list of course names
-            return CourseNames;
-        }
-
-        /// <summary>
         /// Returns detailed information about a specific course by ID.
         /// </summary>
         /// <example>
-        /// GET api/Course/FindCourse/1 -> { "Id": 1, "Name": "HTTP5101", ... }
+        /// GET api/Course/FindCourse/1
         /// </example>
         /// <param name="id">The ID of the course to retrieve.</param>
         /// <returns>
@@ -107,7 +69,7 @@ namespace Cumulative1.Controllers
         /// Returns a list of all courses in the system.
         /// </summary>
         /// <example>
-        /// GET api/Course/ListCourses -> [{ "Id": 1, "Name": "HTTP5101", ... }, ...]
+        /// GET api/Course/ListCourses 
         /// </example>
         /// <returns>
         /// A list of all course objects.

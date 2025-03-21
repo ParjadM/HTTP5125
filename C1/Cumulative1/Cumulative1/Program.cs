@@ -1,8 +1,5 @@
 using Cumulative1.Controllers;
 using Cumulative1.Model;
-using FluentAssertions.Common;
-using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

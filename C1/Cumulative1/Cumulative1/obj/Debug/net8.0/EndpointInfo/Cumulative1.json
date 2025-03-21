@@ -5,44 +5,6 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Course/ListCourseNames": {
-      "get": {
-        "tags": [
-          "CourseAPI"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Course/FindCourse/{id}": {
       "get": {
         "tags": [
@@ -121,44 +83,6 @@
         }
       }
     },
-    "/api/Student/ListStudentNames": {
-      "get": {
-        "tags": [
-          "StudentAPI"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Student/FindStudent/{id}": {
       "get": {
         "tags": [
@@ -229,44 +153,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Student"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Teacher/ListTeacherNames": {
-      "get": {
-        "tags": [
-          "TeacherAPI"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
                   }
                 }
               }

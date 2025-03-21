@@ -21,46 +21,10 @@ namespace Cumulative1.Controllers
         }
 
         /// <summary>
-        /// Returns a list of teacher names in the system.
-        /// </summary>
-        /// <example>
-        /// GET api/Teacher/ListTeacherNames -> ["Alexander Bennett", "Caitlin Cummings"]
-        /// </example>
-        /// <returns>
-        /// A list of teacher names.
-        /// </returns>
-        [HttpGet]
-        [Route("ListTeacherNames")]
-        public List<string> ListTeacherNames()
-        {
-            // Create an empty list of teacher names
-            List<string> TeacherNames = new List<string>();
-
-            using (MySqlConnection connection = _context.AccessDatabase())
-            {
-                connection.Open();
-                MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT CONCAT(teacherfname, ' ', teacherlname) AS FullName FROM teachers";
-
-                using (MySqlDataReader resultSet = command.ExecuteReader())
-                {
-                    while (resultSet.Read())
-                    {
-                        string teacherName =resultSet["FullName"].ToString();
-                        TeacherNames.Add(teacherName);
-                    }
-                }
-            }
-
-            // Return the final list of teacher names
-            return TeacherNames;
-        }
-
-        /// <summary>
         /// Returns detailed information about a specific teacher by ID.
         /// </summary>
         /// <example>
-        /// GET api/Teacher/FindTeacher/1 -> { "Id": 1, "Name": "Alexander Bennett", ... }
+        /// GET api/Teacher/FindTeacher/1 
         /// </example>
         /// <param name="id">The ID of the teacher to retrieve.</param>
         /// <returns>
@@ -103,7 +67,7 @@ namespace Cumulative1.Controllers
         /// Returns a list of all teachers in the system.
         /// </summary>
         /// <example>
-        /// GET api/Teacher/ListTeachers -> [{ "Id": 1, "Name": "Alexander Bennett", ... }, ...]
+        /// GET api/Teacher/ListTeachers 
         /// </example>
         /// <returns>
         /// A list of all teacher objects.
